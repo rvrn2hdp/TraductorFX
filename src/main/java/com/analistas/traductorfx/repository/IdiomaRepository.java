@@ -1,6 +1,7 @@
 package com.analistas.traductorfx.repository;
 
 import com.analistas.traductorfx.model.Idioma;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,9 +13,13 @@ public class IdiomaRepository {
     private List<Idioma> idiomas;
     
     public IdiomaRepository() {
+        idiomas = new ArrayList<>();
+
         idiomas.add(new Idioma(1, "Inglés"));
-        idiomas.add(new Idioma(2, "Portuguës"));
-        idiomas.add(new Idioma(3, "Español"));
+        idiomas.add(new Idioma(2, "Português"));
+        idiomas.add(new Idioma(3, "Italiano"));
+        idiomas.add(new Idioma(4, "Francés"));
+        idiomas.add(new Idioma(5, "Español"));
         
     }
     

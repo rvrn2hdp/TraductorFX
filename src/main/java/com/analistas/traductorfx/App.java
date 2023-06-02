@@ -1,7 +1,13 @@
 package com.analistas.traductorfx;
 
+import com.analistas.traductorfx.model.Idioma;
+import com.analistas.traductorfx.model.Palabra;
 import com.analistas.traductorfx.repository.IdiomaRepository;
+import com.analistas.traductorfx.repository.PalabraRepository;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -14,6 +20,10 @@ import javafx.stage.Stage;
  * JavaFX App
  */
 public class App extends Application {
+    
+    
+    static IdiomaRepository idiomaRepo = new IdiomaRepository();
+    static PalabraRepository palabraRepo = new PalabraRepository();
 
     @Override
     public void start(Stage stage) {
@@ -26,7 +36,6 @@ public class App extends Application {
         var txfTraducion = new TextField();//palabra traducida
         var cmbIdiomas = new ComboBox();
         
-        var idiomaRepo = new IdiomaRepository();
         
         
         panel.getChildren().addAll(lblTraductor,txfPalabra,
@@ -56,10 +65,46 @@ public class App extends Application {
         cmbIdiomas.getItems().addAll(idiomaRepo.getIdiomas());
         cmbIdiomas.setPromptText("Seleccionar un idioma");
         
+        //manejado de evento del combobox, para realizar las traducciones:
+        cmbIdiomas.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Palabra palabra = new Palabra();
+                palabra.setPalabra(txfPalabra.getText().trim().toLowerCase());
+                palabra.setIdioma((Idioma)cmbIdiomas.getItems().get(4));
+                txfTraducion.setText("ninguna");
+            }
+        });
+        
     }
 
     public static void main(String[] args) {
         launch();
     }
+    
+    public static String traducirPalabra(Palabra palabra, Idioma idioma) {
+        String traduccion = "palabra no encontrada";
+        
+        for(Palabra p : palabraRepo.getPalabrasEsp()) {
+            if(p.getPalabra().toLowerCase().equals(palabra.getPalabra().toLowerCase())) {
+                palabra.setId(p.getId());
+                
+                switch (idioma.getId()) {
+                    case 1:
+                        traduccion = palabraRepo.getPalabrasIng().get(palabra.getId()-1).getPalabra();
+                        break;
+                    case 2:
+                        
+                    default:
+                        throw new AssertionError();
+                }
+            }
+        }
+        
+        return traduccion;
+        
+    }
+    
+    
 
 }
