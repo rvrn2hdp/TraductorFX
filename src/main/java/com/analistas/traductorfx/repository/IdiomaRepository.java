@@ -15,11 +15,10 @@ public class IdiomaRepository {
     public IdiomaRepository() {
         idiomas = new ArrayList<>();
 
-        idiomas.add(new Idioma(1, "Inglés"));
-        idiomas.add(new Idioma(2, "Português"));
-        idiomas.add(new Idioma(3, "Italiano"));
-        idiomas.add(new Idioma(4, "Francés"));
-        idiomas.add(new Idioma(5, "Español"));
+        idiomas.add(new Idioma(1, "Español"));
+        idiomas.add(new Idioma(2, "Inglés"));
+        idiomas.add(new Idioma(3, "Português"));
+        
         
     }
     

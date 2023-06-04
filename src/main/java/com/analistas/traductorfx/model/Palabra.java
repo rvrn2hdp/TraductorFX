@@ -9,6 +9,7 @@ package com.analistas.traductorfx.model;
  * @author RVRN2
  */
 public class Palabra {
+
     private int id;
     private String palabra;
     private Idioma idioma;
@@ -50,7 +51,5 @@ public class Palabra {
     public String toString() {
         return palabra;
     }
-    
-    
-    
+
 }
