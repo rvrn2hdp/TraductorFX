@@ -28,13 +28,16 @@ public class App extends Application {
         var panel = new AnchorPane();
         var escena = new Scene(panel, 540, 200);
 
-        var lblTraductor = new Label("Palabra en Español: ");
+        var lblTraductor = new Label("Palabra a Traducir: ");
+        var lblTraduccion = new Label("Palabra Traducida: ");
         var txfPalabra = new TextField();//palabra a traducir
         var txfTraducion = new TextField();//palabra traducida
-        var cmbIdiomas = new ComboBox();
+        var cmbIdiomaInicial = new ComboBox();
+        var cmbIdiomaDos = new ComboBox();
 
         panel.getChildren().addAll(lblTraductor, txfPalabra,
-                txfTraducion, cmbIdiomas);
+                txfTraducion, cmbIdiomaDos, cmbIdiomaInicial,
+                lblTraduccion);
 
         stage.setTitle("Traductor de Palabras");
         stage.setScene(escena);
@@ -45,31 +48,40 @@ public class App extends Application {
         //label
         lblTraductor.setLayoutX(20);
         lblTraductor.setLayoutY(20);
+        lblTraduccion.setLayoutX(panel.getWidth() - txfTraducion.getWidth() - 40);
+        lblTraduccion.setLayoutY(20);
 
         //Textfields
         txfPalabra.setLayoutX(20);
         txfPalabra.setLayoutY(40);
 
-        txfTraducion.setLayoutX(panel.getWidth() - txfTraducion.getWidth() - 20);
+        txfTraducion.setLayoutX(panel.getWidth() - txfTraducion.getWidth() - 40);
         txfTraducion.setLayoutY(40);
 
         //comboBox
-        cmbIdiomas.setLayoutX(20 + txfPalabra.getWidth() + 20);
-        cmbIdiomas.setLayoutY(40);
-        cmbIdiomas.getItems().addAll(idiomaRepo.getIdiomas());
-        cmbIdiomas.setPromptText("Seleccionar un idioma");
+        cmbIdiomaInicial.setLayoutX(20);
+        cmbIdiomaInicial.setLayoutY(70);
+        //cmbIdiomaUno.setMaxSize(150, 30);
+        cmbIdiomaInicial.getItems().addAll(idiomaRepo.getIdiomas());
+        cmbIdiomaInicial.setPromptText("Seleccionar un idioma");
 
-        //manejado de evento del combobox, para realizar las traducciones:
-        cmbIdiomas.setOnAction(new EventHandler<ActionEvent>() {
+        cmbIdiomaDos.setLayoutX(panel.getWidth() - txfTraducion.getWidth() - 40);
+        cmbIdiomaDos.setLayoutY(70);
+        cmbIdiomaDos.getItems().addAll(idiomaRepo.getIdiomas());
+        cmbIdiomaDos.setPromptText("Seleccionar un idioma");
+
+        //manejador de evento del combobox, para realizar las traducciones:
+        cmbIdiomaDos.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
                 Palabra palabra = new Palabra();
                 palabra.setPalabra(txfPalabra.getText().trim());
-                palabra.setIdioma((Idioma) cmbIdiomas.getItems().get(0));
+                palabra.setIdioma((Idioma) cmbIdiomaDos.getItems().get(0));
 
-                Idioma idioma = (Idioma) cmbIdiomas.getSelectionModel().getSelectedItem();
-                txfTraducion.setText(traducirPalabra(palabra, idioma));
+                Idioma idiomaInicial = (Idioma) cmbIdiomaInicial.getSelectionModel().getSelectedItem();
+                Idioma idiomaAtraducir = (Idioma) cmbIdiomaDos.getSelectionModel().getSelectedItem();
+                txfTraducion.setText(traducirPalabra(palabra, idiomaAtraducir));
             }
         });
 
@@ -79,7 +91,7 @@ public class App extends Application {
         launch();
     }
 
-    public static String traducirPalabra(Palabra palabra, Idioma idioma) {
+    public static String traducirPalabra(Palabra palabra, Idioma idiomaUno) {
 
         String traduccion = "palabra no encontrada";
 
@@ -87,9 +99,8 @@ public class App extends Application {
             if (p.getPalabra().toLowerCase().equals(palabra.getPalabra().toLowerCase())) {
 
                 palabra.setId(p.getId());
-                System.out.println(idioma.getNombre() + idioma.getId());
 
-                switch (idioma.getId()) {
+                switch (idiomaUno.getId()) {
                     case 1:
                         traduccion = palabraRepo.getPalabrasEsp().get(palabra.getId() - 1).getPalabra();
                         break;

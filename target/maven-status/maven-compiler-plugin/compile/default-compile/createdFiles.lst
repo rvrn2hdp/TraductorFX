@@ -1,0 +1,7 @@
+com\analistas\traductorfx\model\Palabra.class
+com\analistas\traductorfx\model\Idioma.class
+module-info.class
+com\analistas\traductorfx\repository\PalabraRepository.class
+com\analistas\traductorfx\App.class
+com\analistas\traductorfx\App$1.class
+com\analistas\traductorfx\repository\IdiomaRepository.class
