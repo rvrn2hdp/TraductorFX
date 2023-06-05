@@ -30,17 +30,17 @@ public class PalabraRepository {
         palabrasPor = new ArrayList<>();
 
         //Añadir palabras a las colecciones:
-        palabrasEsp.add(new Palabra(1, "Perro", idiomaRepository.getIdiomas().get(1)));
-        palabrasEsp.add(new Palabra(2, "Gato", idiomaRepository.getIdiomas().get(1)));
-        palabrasEsp.add(new Palabra(3, "Pollo", idiomaRepository.getIdiomas().get(1)));
+        palabrasEsp.add(new Palabra(1, "Perro", idiomaRepository.getIdiomas().get(0)));
+        palabrasEsp.add(new Palabra(2, "Gato", idiomaRepository.getIdiomas().get(0)));
+        palabrasEsp.add(new Palabra(3, "Pollo", idiomaRepository.getIdiomas().get(0)));
 
         palabrasIng.add(new Palabra(1, "Dog", idiomaRepository.getIdiomas().get(1)));
         palabrasIng.add(new Palabra(2, "cat", idiomaRepository.getIdiomas().get(1)));
         palabrasIng.add(new Palabra(3, "Chicken", idiomaRepository.getIdiomas().get(1)));
         
-        palabrasPor.add(new Palabra(1, "Cachorro", idiomaRepository.getIdiomas().get(1)));
-        palabrasPor.add(new Palabra(2, "Gato", idiomaRepository.getIdiomas().get(1)));
-        palabrasPor.add(new Palabra(3, "Frango", idiomaRepository.getIdiomas().get(1)));
+        palabrasPor.add(new Palabra(1, "Cachorro", idiomaRepository.getIdiomas().get(2)));
+        palabrasPor.add(new Palabra(2, "Gato", idiomaRepository.getIdiomas().get(2)));
+        palabrasPor.add(new Palabra(3, "Frango", idiomaRepository.getIdiomas().get(2)));
 
     }
 
