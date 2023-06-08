@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -31,14 +32,15 @@ public class App extends Application {
 
         var lblTraductor = new Label("Palabra a Traducir: ");
         var lblTraduccion = new Label("Palabra Traducida: ");
-        var txfPalabra = new TextField();//palabra a traducir
+        var txfPalabra = new TextField();//palabra a traducirPalabra
         var txfTraducion = new TextField();//palabra traducida
         var cmbIdiomaInicial = new ComboBox();
         var cmbIdiomaATraducir = new ComboBox();
+        var btnCambiarIdioma = new Button("Intercambiar Idiomas");
 
         panel.getChildren().addAll(lblTraductor, txfPalabra,
                 txfTraducion, cmbIdiomaATraducir, cmbIdiomaInicial,
-                lblTraduccion);
+                lblTraduccion, btnCambiarIdioma);
 
         stage.setTitle("Traductor de Palabras");
         stage.setScene(escena);
@@ -46,9 +48,14 @@ public class App extends Application {
         stage.show();
 
         //Posicion de los componentes:
+        //Botones
+        btnCambiarIdioma.setLayoutX((panel.getWidth() / 2) - 70);
+        btnCambiarIdioma.setLayoutY(40);
+
         //label
         lblTraductor.setLayoutX(20);
         lblTraductor.setLayoutY(20);
+
         lblTraduccion.setLayoutX(panel.getWidth() - txfTraducion.getWidth() - 40);
         lblTraduccion.setLayoutY(20);
 
@@ -78,97 +85,41 @@ public class App extends Application {
 
                 Palabra palabra = new Palabra();
                 palabra.setPalabra(txfPalabra.getText().trim().toLowerCase());
-                
+
                 Idioma idiomaInicial = (Idioma) cmbIdiomaInicial.getSelectionModel().getSelectedItem();
                 palabra.setIdioma(idiomaInicial);
 
                 Idioma idiomaAtraducir = (Idioma) cmbIdiomaATraducir.getSelectionModel().getSelectedItem();
-                txfTraducion.setText(traducir(palabra, idiomaAtraducir));
+                txfTraducion.setText(traducirPalabra(palabra, idiomaAtraducir));
             }
         });
 
+        //manejar evento del boton intercambiar idioma
+        btnCambiarIdioma.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Idioma idiomaInicial = (Idioma) cmbIdiomaInicial.getSelectionModel().getSelectedItem();
+                Idioma idiomaATraducir = (Idioma) cmbIdiomaATraducir.getSelectionModel().getSelectedItem();
+
+                cmbIdiomaInicial.getSelectionModel().select(idiomaATraducir);
+
+                cmbIdiomaATraducir.getSelectionModel().select(idiomaInicial);
+                
+                //cmbIdiomaATraducir.setPromptText(idiomaATraducir.toString());
+                //cmbIdiomaATraducir.setItems((ObservableList) idiomaRepo.getIdiomas().get(idiomaInicial.getId()));
+            }
+        });
     }
 
     public static void main(String[] args) {
         launch();
     }
 
-    public static String traducirPalabra(Palabra palabra, Idioma idiomaATraducir) {
+    public static String traducirPalabra(Palabra palabra, Idioma idioma) {
 
-        String traduccion = "palabra no encontrada";
-        
-        for (Palabra p : palabraRepo.getPalabrasPor()) {
-            if (p.getPalabra().toLowerCase().equals(palabra.getPalabra().toLowerCase())) {
-
-                palabra.setId(p.getId());
-
-                switch (idiomaATraducir.getId()) {
-                    case 1:
-                        traduccion = palabraRepo.getPalabrasEsp().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    case 2:
-                        traduccion = palabraRepo.getPalabrasIng().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    case 3:
-                        traduccion = palabraRepo.getPalabrasPor().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        for (Palabra p : palabraRepo.getPalabrasIng()) {
-            if (p.getPalabra().toLowerCase().equals(palabra.getPalabra().toLowerCase())) {
-
-                palabra.setId(p.getId());
-
-                switch (idiomaATraducir.getId()) {
-                    case 1:
-                        traduccion = palabraRepo.getPalabrasEsp().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    case 2:
-                        traduccion = palabraRepo.getPalabrasIng().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    case 3:
-                        traduccion = palabraRepo.getPalabrasPor().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        
-        for (Palabra p : palabraRepo.getPalabrasEsp()) {
-            if (p.getPalabra().toLowerCase().equals(palabra.getPalabra().toLowerCase())) {
-
-                palabra.setId(p.getId());
-
-                switch (idiomaATraducir.getId()) {
-                    case 1:
-                        traduccion = palabraRepo.getPalabrasEsp().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    case 2:
-                        traduccion = palabraRepo.getPalabrasIng().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    case 3:
-                        traduccion = palabraRepo.getPalabrasPor().get(palabra.getId() - 1).getPalabra();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        return traduccion;
-
-    }
-
-    public static String traducir(Palabra palabra, Idioma idioma) {
-        
         String traduccion = "Palabra no encontrada.";
-        List <Palabra> listaIdioma = palabraRepo.getPalabrasEsp();
-        
+        List<Palabra> listaIdioma = palabraRepo.getPalabrasEsp();
+
         switch (palabra.getIdioma().getId()) {
             case 1:
                 listaIdioma = palabraRepo.getPalabrasEsp();
@@ -182,7 +133,7 @@ public class App extends Application {
             default:
                 break;
         }
-        
+
         for (Palabra p : listaIdioma) {
             if (p.getPalabra().toLowerCase().equals(palabra.getPalabra().toLowerCase())) {
 
@@ -203,7 +154,7 @@ public class App extends Application {
                 }
             }
         }
-        
+
         return traduccion;
     }
 }
